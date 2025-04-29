@@ -30,16 +30,22 @@ namespace Crud.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var employee = _mapper.Map<Employee>(employeeDto);
+            try
+            {
+                var employee = _mapper.Map<Employee>(employeeDto);
+                employee.CreatedBy = "AngularClient";  // or retrieve from claims
+                employee.CreatedDate = DateTime.UtcNow;
 
-            // Optional: set audit fields here
-            employee.CreatedBy = "AngularClient"; // or retrieve from claims
-            employee.CreatedDate = DateTime.UtcNow;
+                await _unitOfWork.EmployeeRepo.AddAsync(employee);
+                await _unitOfWork.CompleteAsync();
 
-            await _unitOfWork.EmployeeRepo.AddAsync(employee);
-            await _unitOfWork.CompleteAsync();
-
-            return Ok(new { message = "Employee created successfully." });
+                return Ok(new { message = "Employee created successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
         }
+
     }
 }
