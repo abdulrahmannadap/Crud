@@ -1,0 +1,17 @@
+CREATE TABLE EmployeeTbl (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    EmpCode NVARCHAR(50) NOT NULL,
+    EmpName NVARCHAR(100) NOT NULL,
+    UserLogId NVARCHAR(50) NOT NULL,
+    Password NVARCHAR(100) NOT NULL,
+    Role NVARCHAR(50) NOT NULL,
+    EmailAddress NVARCHAR(100) NOT NULL,
+    CreateDateTime DATETIME2 NOT NULL,
+    
+    -- BaseEntity properties
+    CreatedBy NVARCHAR(100) NULL,
+    CreatedDate DATETIME2 NULL,
+    DeletedBy NVARCHAR(100) NULL,
+    DeletedDate DATETIME2 NULL,
+    IsDeleted BIT NOT NULL DEFAULT 0
+);
